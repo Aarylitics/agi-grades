@@ -1,8 +1,8 @@
-!pip install pandas
-!pip install numpy
-!pip install matplotlib
-!pip install seaborn
-!pip install scikit-learn
+pip install pandas
+pip install numpy
+pip install matplotlib
+pip install seaborn
+pip install scikit-learn
 
 import streamlit as st 
 import pandas as pd
