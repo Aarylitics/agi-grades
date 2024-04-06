@@ -23,8 +23,11 @@ st.write("Interested in what the current grades look like? Or how about who's st
 uploaded_file = st.file_uploader("Upload grade dataset here (csv file)")
 
 if uploaded_file is not None:
-     data = pd.read_csv(uploaded_file, encoding='utf-8')
-     st.write(data)
+    try:
+        data = pd.read_csv(uploaded_file, encoding='utf-8')
+        st.write(data)
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
 
 st.write("See if the data loaded in is correct!")
 
