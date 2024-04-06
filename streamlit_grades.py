@@ -1,6 +1,9 @@
 import streamlit as st 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.cluster import KMeans
 
 st.set_page_config(
      page_title='Dashboard',
@@ -53,10 +56,6 @@ table2 = pd.crosstab(data2['classes'], data2['Grade'])
 
 # Selecting classes and Grade2
 table3 = pd.crosstab(data2['classes'], data2['Grade2'])
-
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Assuming table1, table2, and table3 are the DataFrames obtained from the crosstabs
 
@@ -171,8 +170,6 @@ data3['avgGradePoint'] = data3.groupby('ID')['gradePoint'].transform('mean')
 data3 = data3.reset_index(drop=True)
 
 st.markdown("# Students of Concern")
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Create histogram plot
 fig, ax = plt.subplots(figsize=(10, 3))  # Set figure size here
@@ -188,12 +185,6 @@ st.write("The plot above lets us know the distribution of students 'GPA's'")
 st.write("In this case, the student 'GPA's' is a  calculated number based on the number of classes a student has taken and their grades in those classes")
 
 st.write("Down below is a clustering analysis that tells us where students lie per academic status -- Great Standing, Good Standing, Decent Standing, and Academic Warning ")
-
-
-import streamlit as st
-import matplotlib.pyplot as plt
-from sklearn.cluster import KMeans
-import pandas as pd
 
 #cluster1
 #  Prepare data for clustering (reshaping into a 2D array)
