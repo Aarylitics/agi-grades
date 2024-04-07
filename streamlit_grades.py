@@ -205,6 +205,7 @@ data3['gradePoint'] = data3['Grade'].apply(calculate_grade_point)
 # Group by 'ID' and calculate average and sum of grade points
 data3['sumGradePoint'] = data3.groupby('ID')['gradePoint'].transform('sum')
 data3['avgGradePoint'] = data3.groupby('ID')['gradePoint'].transform('mean')
+data3['avgGradePoint'] = data3['avgGradePoint']/3
 # Ungroup the DataFrame
 data3 = data3.reset_index(drop=True)
 
@@ -238,7 +239,7 @@ X = data3['avgGradePoint'].values.reshape(-1, 1)
 kmeans = KMeans(n_clusters=3, random_state=0).fit(X)
 # Plot the data points
 fig, ax = plt.subplots(figsize=(10, 3))
-scatter = ax.scatter(data3['sumGradePoint'],data3['coursesTaken'],c=kmeans.labels_,cmap = "inferno")
+scatter = ax.scatter(data3['sumGradePoint'],data3['coursesTaken'],c=kmeans.labels_,cmap = "Dark2")
 ax.set_title('Identifying Students of Concern')
 ax.set_ylabel('Number of Courses Taken')
 ax.set_xlabel('Sum Grade Point')
@@ -258,7 +259,7 @@ X = data3['avgGradePoint'].values.reshape(-1, 1)
 kmeans = KMeans(n_clusters=3, random_state=0).fit(X)
 # Create the scatter plot
 fig, ax = plt.subplots(figsize=(8, 3))  # Set figure size here
-ax.scatter(data3.index, data3['avgGradePoint'], c=kmeans.labels_, cmap='inferno')
+ax.scatter(data3.index, data3['avgGradePoint'], c=kmeans.labels_, cmap='Dark2')
 # Plot centroids
 centroids = kmeans.cluster_centers_
 for centroid in centroids:
