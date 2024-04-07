@@ -15,14 +15,11 @@ st.set_page_config(
 
 #set sidebar
 st.sidebar.image("agilogo.jpeg", use_column_width=True)
-st.sidebar.title('Agriculture Institute Dashboard')
+st.sidebar.title('Agricultural Institute Dashboard')
 st.sidebar.divider()
 
 st.markdown("# Grades Evaluation")
-st.write("Interested in what the current grades look like? Or how about who's still ")
-
-
-
+st.markdown("### From seeing current grade distributions to obtaining a list on students that need academic help, this dashboard will help you do just that!")
 
 
 #data upload
@@ -215,7 +212,7 @@ data3 = data3.reset_index(drop=True)
 st.markdown("# At Risk Students")
 # Create histogram plot
 fig, ax = plt.subplots(figsize=(10, 3))  # Set figure size here
-sns.histplot(data3["avgGradePoint"], ax=ax)
+sns.histplot(data3["avgGradePoint"], ax=ax, color = "red")
 ax.set_title('Histogram of Average Grade Point')
 ax.set_xlabel('Average Grade Point')
 ax.set_ylabel('Frequency')
@@ -232,23 +229,6 @@ st.write("Down below is a clustering analysis that tells us where students lie p
 
 
 
-#cluster1
-#  Prepare data for clustering (reshaping into a 2D array)
-X = data3['avgGradePoint'].values.reshape(-1, 1)
-# Perform KMeans clustering
-kmeans = KMeans(n_clusters=3, random_state=0).fit(X)
-# Plot the data points
-fig, ax = plt.subplots(figsize=(10, 3))
-scatter = ax.scatter(data3['sumGradePoint'],data3['coursesTaken'],c=kmeans.labels_,cmap = "Dark2")
-ax.set_title('Identifying Students of Concern')
-ax.set_ylabel('Number of Courses Taken')
-ax.set_xlabel('Sum Grade Point')
-# Add legend
-legend = ax.legend(*scatter.legend_elements(), title='Cluster', loc='upper right')
-ax.add_artist(legend)
-# Display the plot in Streamlit
-st.pyplot(fig)
-
 
 
 
@@ -259,7 +239,7 @@ X = data3['avgGradePoint'].values.reshape(-1, 1)
 kmeans = KMeans(n_clusters=3, random_state=0).fit(X)
 # Create the scatter plot
 fig, ax = plt.subplots(figsize=(8, 3))  # Set figure size here
-ax.scatter(data3.index, data3['avgGradePoint'], c=kmeans.labels_, cmap='Dark2')
+scatter = ax.scatter(data3.index, data3['avgGradePoint'], c=kmeans.labels_, cmap='Dark2')
 # Plot centroids
 centroids = kmeans.cluster_centers_
 for centroid in centroids:
@@ -279,12 +259,12 @@ st.pyplot(fig)
 
 for i, center in enumerate(kmeans.cluster_centers_):
     rounded_center = round(center[0], 2)
-    st.write(f"Cluster {i+1} = Average grade point of {rounded_center}")
+    st.write(f"##### Cluster {i+1} = Average grade point of {rounded_center}")
 cluster_centers = kmeans.cluster_centers_
 cluster_centers = np.array(cluster_centers)
 # Calculate the minimum cluster center
 min_cluster_center = round(cluster_centers.min(),2)
-st.write("Students of concern have an average grade point of around ",min_cluster_center)
+st.write("##### Students of concern have an average grade point of around ",min_cluster_center)
 
 
 
@@ -351,7 +331,7 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     return df
 #Write dataframe
 st.write("Use this table to filter the 3 different academic clusters and print out a csv file with students name and their info")
-st.write("Instructions: Click 'Add filters' --> filter the dataframe on 'cluster' --> pull up the cluster you want to see")
+st.write("_Instructions: Click 'Add filters' → filter the dataframe on 'cluster' → pull up the cluster you want to see_")
 data4 = filter_dataframe(data4)
 st.dataframe(data4)
 
@@ -409,7 +389,7 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
 data3 = data3[["ID","Name","classes","Descr","Term","Session","Section","Class Nbr"]]
 st.markdown("### Use this table to see which classes students have fared in")
-st.write("Instructions: click 'add student names' --> click 'Name' from the drop down --> type in students name (Full Name as shown in dataset)")
+st.write("_Instructions: click 'add student names' → click 'Name' from the drop down → type in students name (Full Name as shown in dataset)_")
 data3 = filter_dataframe(data3)
 st.dataframe(data3)
 
