@@ -20,6 +20,12 @@ st.sidebar.divider()
 st.markdown("# Grades Evaluation")
 st.write("Interested in what the current grades look like? Or how about who's still ")
 
+
+
+
+
+
+#data upload
 uploaded_file = st.file_uploader("Upload grade dataset here (csv file)")
 
 if uploaded_file is not None:
@@ -27,7 +33,7 @@ if uploaded_file is not None:
         data = pd.read_csv(uploaded_file, encoding='utf-8')
         st.write(data)
     except Exception as e:
-        st.error(f"An error occurred: {e}")
+        st.error(f"Load in data")
 
 st.write("See if the data loaded in is correct!")
 
@@ -37,8 +43,13 @@ st.write("There are ", unique_ids_count, " students in the dataset")
 st.sidebar.metric(label="Number of Students", value=unique_ids_count)
 st.sidebar.divider()
 
-#print a table that displays names and id's?
 
+
+
+
+
+
+#variable additions
 data1 = (data.groupby('ID').apply(lambda x: x.assign(totalUnits=x['Unit Taken'].sum(), coursesTaken=x['Term'].count())).reset_index(drop=True))
 
 # Move and rename columns
@@ -52,17 +63,21 @@ data2['Grade2'] = data2['Grade'].map({'A+': 'A', 'A': 'A', 'A-': 'A',
                                            'D+': 'D', 'D': 'D', 'D-': 'D',
                                            'F': 'F'}).fillna('IN')
 
+
+
+
+
+
+
+
+#create tables to show frequencies per factor
 table1 = pd.crosstab(data2['classes'], data2['EarnCredit'])
 
-# Selecting classes and Grade
 table2 = pd.crosstab(data2['classes'], data2['Grade'])
 
-# Selecting classes and Grade2
 table3 = pd.crosstab(data2['classes'], data2['Grade2'])
 
-# Assuming table1, table2, and table3 are the DataFrames obtained from the crosstabs
-
-# Convert tables to pandas DataFrames
+# Convert tables to DataFrames
 table1_df = pd.DataFrame(table1.stack()).reset_index()
 table1_df.columns = ['Class', 'EarnCredit', 'Frequency']
 
@@ -72,63 +87,109 @@ table2_df.columns = ['Class', 'Grade', 'Frequency']
 table3_df = pd.DataFrame(table3.stack()).reset_index()
 table3_df.columns = ['Class', 'Grade', 'Frequency']
 
-st.markdown("# Graphs")
-st.write("Each graph will have a corresponding table underneath it. I recommend you look at them to get a more accurate number!")
+st.markdown("# Student Grades")
 
-st.markdown("### Histogram by Credit Earned")
+
+
+
+st.markdown("### Histogram of Grades by Earned Credit")
+
 # Set up the FacetGrid
-g = sns.FacetGrid(table1_df, col='Class', col_wrap=3,height = 3, aspect = 1.25)
+g = sns.FacetGrid(table1_df, col='Class', col_wrap=3, height=3, aspect=1.25)
 
 # Plotting on each facet
-g.map_dataframe(sns.barplot, x='EarnCredit', y='Frequency', hue ='EarnCredit')
+g.map(sns.barplot, x='EarnCredit', y='Frequency', data=table1_df.reset_index(), hue='EarnCredit',palette='Reds')
+
+# Accessing each subplot and annotating bars
+for ax in g.axes.flat:
+    for p in ax.patches:
+        ax.annotate(f'{int(p.get_height())}', (p.get_x() + p.get_width() / 2., p.get_height()),
+                    ha='center', va='bottom', fontsize=10, color='black', xytext=(0, 13),
+                    textcoords='offset points')
 
 # Set title, x-label, and y-label for each facet
-g.set_titles('Histogram of Earn Credit by Class - {col_name}',fontsize=24)  # Include {col_name} to display the factor being graphed
-g.set_xlabels('Earn Credit', fontsize=12)
-g.set_ylabels('Frequency', fontsize=12)
+g.set_titles('Histogram of Earn Credit by Class - {col_name}', fontsize=24)
+g.set_axis_labels('Earn Credit', 'Frequency')
+
+# Add legend
+g.add_legend()
+
+# Get the figure and axes objects
+fig = plt.gcf()
 
 # Display the plot in Streamlit
-st.pyplot(plt.gcf())
+st.pyplot(fig)
 
-st.write("History of Earn Credit by Class:")
-st.write(table1)
+
+
+
+
 
 st.markdown("### Histogram of Grades by Class")
 # Set up the FacetGrid
-g = sns.FacetGrid(table3_df, col='Class', col_wrap=3, height = 3, aspect = 1.25)
+g = sns.FacetGrid(table3_df, col='Class', col_wrap=3, height=3, aspect=1.25)
 
 # Plotting on each facet
-g.map_dataframe(sns.barplot, x='Grade', y='Frequency', hue='Grade')
+g.map(sns.barplot, x='Grade', y='Frequency', data=table3_df.reset_index(), hue='Grade',palette='Reds')
+
+# Accessing each subplot and annotating bars
+for ax in g.axes.flat:
+    for p in ax.patches:
+        ax.annotate(f'{int(p.get_height())}', (p.get_x() + p.get_width() / 2., p.get_height()),
+                    ha='center', va='bottom', fontsize=10, color='black', xytext=(0, 13),
+                    textcoords='offset points')
 
 # Set title, x-label, and y-label for each facet
-g.set_titles('Histogram of Grades by Class - {col_name}')
-g.set_xlabels('Grade')
-g.set_ylabels('Frequency')
+g.set_titles('Histogram of Earn Credit by Class - {col_name}', fontsize=24)
+g.set_axis_labels('Grade', 'Frequency')
+
+# Add legend
+g.add_legend()
+
+# Get the figure and axes objects
+fig = plt.gcf()
 
 # Display the plot in Streamlit
-st.pyplot(plt.gcf())
+st.pyplot(fig)
 
-st.write("\nHistogram of Grades by Class:")
-st.write(table3)
+
+
 
 
 st.markdown("### Histogram of Grades by Class -- In-depth")
 # Set up the FacetGrid
-g = sns.FacetGrid(table2_df, col='Class', col_wrap=3,height = 3, aspect = 1.25)
+g = sns.FacetGrid(table2_df, col='Class', col_wrap=3, height=3, aspect=1.25)
 
 # Plotting on each facet
-g.map_dataframe(sns.barplot, x='Grade', y='Frequency', hue='Grade')
+g.map(sns.barplot, x='Grade', y='Frequency', data=table2_df.reset_index(), hue='Grade',palette='Reds')
+
+# Accessing each subplot and annotating bars
+for ax in g.axes.flat:
+    for p in ax.patches:
+        ax.annotate(f'{int(p.get_height())}', (p.get_x() + p.get_width() / 2., p.get_height()),
+                    ha='center', va='bottom', fontsize=10, color='black', xytext=(0, 13),
+                    textcoords='offset points')
 
 # Set title, x-label, and y-label for each facet
-g.set_titles('Histogram of Grades by Class - {col_name}')
-g.set_xlabels('Grade')
-g.set_ylabels('Frequency')
+g.set_titles('Histogram of Earn Credit by Class - {col_name}', fontsize=24)
+g.set_axis_labels('Grade', 'Frequency')
+
+# Add legend
+g.add_legend()
+
+# Get the figure and axes objects
+fig = plt.gcf()
 
 # Display the plot in Streamlit
-st.pyplot(plt.gcf())
+st.pyplot(fig)
 
-st.write("\nHistorgram of Grades by Class:")
-st.write(table2)
+
+
+
+
+
+
+#create new variables for clustering
 
 # Define a function to calculate grade points
 def calculate_grade_point(grade):
@@ -172,7 +233,10 @@ data3['avgGradePoint'] = data3.groupby('ID')['gradePoint'].transform('mean')
 # Ungroup the DataFrame
 data3 = data3.reset_index(drop=True)
 
-st.markdown("# Students of Concern")
+
+
+
+st.markdown("# At Risk Students")
 
 # Create histogram plot
 fig, ax = plt.subplots(figsize=(10, 3))  # Set figure size here
@@ -194,7 +258,7 @@ st.write("Down below is a clustering analysis that tells us where students lie p
 X = data3['avgGradePoint'].values.reshape(-1, 1)
 
 # Perform KMeans clustering
-kmeans = KMeans(n_clusters=4, random_state=0).fit(X)
+kmeans = KMeans(n_clusters=3, random_state=0).fit(X)
 
 # Plot the data points
 fig, ax = plt.subplots(figsize=(10, 3))
@@ -214,7 +278,7 @@ st.pyplot(fig)
 X = data3['avgGradePoint'].values.reshape(-1, 1)
 
 # Perform KMeans clustering
-kmeans = KMeans(n_clusters=4, random_state=0).fit(X)
+kmeans = KMeans(n_clusters=3, random_state=0).fit(X)
 
 # Create the scatter plot
 fig, ax = plt.subplots(figsize=(8, 3))  # Set figure size here
@@ -237,7 +301,6 @@ ax.add_artist(legend)
 # Display the plot in Streamlit
 st.pyplot(fig)
 
-
 for i, center in enumerate(kmeans.cluster_centers_):
     rounded_center = round(center[0], 2)
     st.write(f"Cluster {i+1} = Average grade point of {rounded_center}")
@@ -253,11 +316,11 @@ st.markdown("## Labeling students of concern" )
 data4 = data3.copy()
 data4['cluster'] = kmeans.labels_
 
-data4['cluster'] = data4['cluster'].replace({1: 'Great Standing', 0: 'Good Standing', 3: 'Decent Standing', 2: 'Academic Warning'})
+data4['cluster'] = data4['cluster'].replace({1: 'Great Standing', 0: 'Good Standing', 2: 'At Risk'})
 
 data4 = data4[["ID","Name","cluster","totalUnits","coursesTaken","gradePoint","sumGradePoint","avgGradePoint"]]
 
-clusterData = data4[data4["cluster"] == "Academic Warning"] 
+clusterData = data4[data4["cluster"] == "At Risk"] 
 unique_ids_count = len(clusterData["ID"].unique())
 st.write("There are ", unique_ids_count, " students that have academic warning")
 
@@ -368,7 +431,7 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
 data6 = data3.copy()
 data6['cluster'] = kmeans.labels_
-data6['cluster'] = data6['cluster'].replace({1: 'Great Standing', 0: 'Good Standing', 3: 'Decent Standing', 2: 'Academic Warning'})
+data6['cluster'] = data6['cluster'].replace({1: 'Great Standing', 0: 'Good Standing', 2: 'At Risk'})
 data6 = data6[["ID","Name","cluster","classes","Descr","Term","Session","Section","Class Nbr"]]
 
 st.markdown("### Use this table to see which classes students have fared in")
@@ -394,4 +457,3 @@ st.download_button(
    "text/csv",
    key='download-csv-student'
 )
-
