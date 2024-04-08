@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 #set sidebar
-st.sidebar.image("agilogo(1).png", use_column_width=True)
+st.sidebar.image("agilogo(1).png", use_column_width=False)
 st.sidebar.title('Agricultural Institute Dashboard')
 st.sidebar.divider()
 
