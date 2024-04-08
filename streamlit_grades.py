@@ -10,11 +10,11 @@ st.set_page_config(
      page_title='Dashboard',
      layout="wide",
      initial_sidebar_state="expanded",
-     page_icon="agilogo.jpeg"
+     page_icon="IMG_2487.png"
 )
 
 #set sidebar
-st.sidebar.image("agilogo.jpeg", use_column_width=True)
+st.sidebar.image("IMG_2487.png", use_column_width=True)
 st.sidebar.title('Agricultural Institute Dashboard')
 st.sidebar.divider()
 
