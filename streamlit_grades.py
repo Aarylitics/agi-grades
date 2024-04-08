@@ -26,12 +26,16 @@ st.markdown("### From seeing current grade distributions to obtaining a list on 
 uploaded_file = st.file_uploader("Upload grade dataset here (csv file)")
 if uploaded_file is not None:
     try:
-        data = pd.read_csv(uploaded_file, encoding='utf-8')
+        data = pd.read_csv(uploaded_file, encoding='utf-8', thousands=None)
+        # Remove formatting from numerical columns
+        for col in data.select_dtypes(include='number'):
+            data[col] = data[col].astype(str).str.replace(',', '')
         st.write(data)
     except Exception as e:
-        st.error(f"Load in data")
+        st.error("Error loading data")
 st.write("See if the data loaded in is correct!")
 
+data['Unit Taken'] = pd.to_numeric(data['Unit Taken'])
 
 unique_ids_count = len(data['ID'].unique())
 st.write("There are ", unique_ids_count, " students in the dataset")
@@ -229,9 +233,6 @@ st.write("Down below is a clustering analysis that tells us where students lie p
 
 
 
-
-
-
 #cluster 2
 #  Prepare data for clustering (reshaping into a 2D array)
 X = data3['avgGradePoint'].values.reshape(-1, 1)
@@ -272,7 +273,7 @@ st.write("##### Students of concern have an average grade point of around ",min_
 st.markdown("## Labeling students of concern" )
 data4 = data3.copy()
 data4['cluster'] = kmeans.labels_ #create new variable
-data4['cluster'] = data4['cluster'].replace({1: 'Great Standing', 0: 'Good Standing', 2: 'At Risk'}) #relabel numeric with string
+data4['cluster'] = data4['cluster'].replace({2: 'Great Standing', 0: 'Good Standing', 1: 'At Risk'}) #relabel numeric with string
 data4 = data4[["ID","Name","cluster","totalUnits","coursesTaken","gradePoint","sumGradePoint","avgGradePoint"]] #subset columns
 #print a blurb telling how many students are at risk
 clusterData = data4[data4["cluster"] == "At Risk"] 
