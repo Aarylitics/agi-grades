@@ -10,8 +10,7 @@ st.set_page_config(
      page_title='Dashboard',
      layout="wide",
      initial_sidebar_state="expanded",
-     page_icon="agilogo(1).jpeg",
-     src="https://public.tableau.com/app/profile/kara.emsley/viz/AGI_Dashboard_Draft/AGIDashboardHome?embedded=true"
+     page_icon="agilogo(1).jpeg"
 
 )
 
