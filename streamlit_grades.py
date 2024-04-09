@@ -11,7 +11,6 @@ st.set_page_config(
      layout="wide",
      initial_sidebar_state="expanded",
      page_icon="agilogo(1).jpeg"
-
 )
 
 #set sidebar
@@ -30,7 +29,7 @@ if uploaded_file is not None:
         data = pd.read_csv(uploaded_file, encoding='utf-8', thousands=None)
         # Remove formatting from numerical columns
         for col in data.select_dtypes(include='number'):
-            data[col] = data[col].astype(str).str.replace(',', '')
+            data[col] = data[col].astype(str).str.replace(',', '') #makes it so it doesnt add commas to the data
         st.write(data)
     except Exception as e:
         st.error("Error loading data")
@@ -38,10 +37,10 @@ st.write("See if the data loaded in is correct!")
 
 data['Unit Taken'] = pd.to_numeric(data['Unit Taken'])
 
-unique_ids_count = len(data['ID'].unique())
+unique_ids_count = len(data['ID'].unique()) #counts the number of students in the dataset
 st.write("There are ", unique_ids_count, " students in the dataset")
-st.sidebar.metric(label="Number of Students", value=unique_ids_count)
-st.sidebar.divider()
+st.sidebar.metric(label="Number of Students", value=unique_ids_count) #adds the metrics to the sidebar
+st.sidebar.divider() #adds a line underneath it
 
 
 
@@ -217,7 +216,7 @@ data3 = data3.reset_index(drop=True)
 st.markdown("# At Risk Students")
 # Create histogram plot
 fig, ax = plt.subplots(figsize=(10, 3))  # Set figure size here
-sns.histplot(data3["avgGradePoint"], ax=ax, color = "maroon")
+sns.histplot(data3["avgGradePoint"], ax=ax, color = "red")
 ax.set_title('Histogram of Average Grade Point')
 ax.set_xlabel('Average Grade Point')
 ax.set_ylabel('Frequency')
