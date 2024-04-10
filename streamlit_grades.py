@@ -74,6 +74,7 @@ table1 = pd.crosstab(data2['classes'], data2['EarnCredit'])
 table2 = pd.crosstab(data2['classes'], data2['Grade'])
 table3 = pd.crosstab(data2['classes'], data2['Grade2'])
 
+
 # Convert tables to DataFrames
 table1_df = pd.DataFrame(table1.stack()).reset_index()
 table1_df.columns = ['Class', 'EarnCredit', 'Frequency']
@@ -82,11 +83,12 @@ table2_df.columns = ['Class', 'Grade', 'Frequency']
 table3_df = pd.DataFrame(table3.stack()).reset_index()
 table3_df.columns = ['Class', 'Grade', 'Frequency']
 
-
-
+st.write(table1_df)
 
 st.markdown("# Student Grades")
 st.write("If the charts don't show up, press refresh!")
+
+
 
 
 
@@ -94,7 +96,7 @@ st.markdown("### Histogram of Grades by Earned Credit")
 # Set up the FacetGrid
 g = sns.FacetGrid(table1_df, col='Class', col_wrap=3, height=3, aspect=1.25)
 # Plotting on each facet
-g.map(sns.barplot, x='EarnCredit', y='Frequency', data=table1_df.reset_index(), hue='EarnCredit',palette='Reds', errorbar = None)
+g.map_dataframe(sns.barplot, x='EarnCredit', y='Frequency',  hue='EarnCredit',palette='Reds', errorbar = None)
 # Accessing each subplot and annotating bars
 for ax in g.axes.flat:
     for p in ax.patches:
@@ -116,11 +118,13 @@ st.pyplot(fig)
 
 
 
+
+
 st.markdown("### Histogram of Grades by Class")
 # Set up the FacetGrid
 g = sns.FacetGrid(table3_df, col='Class', col_wrap=3, height=3, aspect=1.25)
 # Plotting on each facet
-g.map(sns.barplot, x='Grade', y='Frequency', data=table3_df.reset_index(), hue='Grade',palette='Reds', errorbar=None)
+g.map_dataframe(sns.barplot, x='Grade', y='Frequency', data=table3_df, hue='Grade',palette='Reds', errorbar=None)
 # Accessing each subplot and annotating bars
 for ax in g.axes.flat:
     for p in ax.patches:
@@ -145,7 +149,7 @@ st.markdown("### Histogram of Grades by Class -- In-depth")
 # Set up the FacetGrid
 g = sns.FacetGrid(table2_df, col='Class', col_wrap=3, height=3, aspect=1.25)
 # Plotting on each facet
-g.map(sns.barplot, x='Grade', y='Frequency', data=table2_df.reset_index(), hue='Grade',palette='Reds', errorbar = None)
+g.map_dataframe(sns.barplot, x='Grade', y='Frequency', data=table2_df, hue='Grade',palette='Reds', errorbar = None)
 # Accessing each subplot and annotating bars
 for ax in g.axes.flat:
     for p in ax.patches:
