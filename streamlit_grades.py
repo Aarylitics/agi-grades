@@ -94,12 +94,12 @@ st.markdown("### Histogram of Grades by Earned Credit")
 # Set up the FacetGrid
 g = sns.FacetGrid(table1_df, col='Class', col_wrap=3, height=3, aspect=1.25)
 # Plotting on each facet
-g.map(sns.barplot, x='EarnCredit', y='Frequency', data=table1_df.reset_index(), hue='EarnCredit',palette='Reds')
+g.map(sns.barplot, x='EarnCredit', y='Frequency', data=table1_df.reset_index(), hue='EarnCredit',palette='Reds', errorbar = None)
 # Accessing each subplot and annotating bars
 for ax in g.axes.flat:
     for p in ax.patches:
         ax.annotate(f'{int(p.get_height())}', (p.get_x() + p.get_width() / 2., p.get_height()),
-                    ha='center', va='bottom', fontsize=10, color='black', xytext=(0, 13),
+                    ha='center', va='bottom', fontsize=10, color='black', xytext=(0, 2),
                     textcoords='offset points')
 # Set title, x-label, and y-label for each facet
 g.set_titles('Histogram of Earn Credit by Class - {col_name}', fontsize=24)
@@ -120,12 +120,12 @@ st.markdown("### Histogram of Grades by Class")
 # Set up the FacetGrid
 g = sns.FacetGrid(table3_df, col='Class', col_wrap=3, height=3, aspect=1.25)
 # Plotting on each facet
-g.map(sns.barplot, x='Grade', y='Frequency', data=table3_df.reset_index(), hue='Grade',palette='Reds')
+g.map(sns.barplot, x='Grade', y='Frequency', data=table3_df.reset_index(), hue='Grade',palette='Reds', errorbar=None)
 # Accessing each subplot and annotating bars
 for ax in g.axes.flat:
     for p in ax.patches:
         ax.annotate(f'{int(p.get_height())}', (p.get_x() + p.get_width() / 2., p.get_height()),
-                    ha='center', va='bottom', fontsize=10, color='black', xytext=(0, 13),
+                    ha='center', va='bottom', fontsize=10, color='black', xytext=(0, 2),
                     textcoords='offset points')
 # Set title, x-label, and y-label for each facet
 g.set_titles('Histogram of Earn Credit by Class - {col_name}', fontsize=24)
@@ -145,12 +145,12 @@ st.markdown("### Histogram of Grades by Class -- In-depth")
 # Set up the FacetGrid
 g = sns.FacetGrid(table2_df, col='Class', col_wrap=3, height=3, aspect=1.25)
 # Plotting on each facet
-g.map(sns.barplot, x='Grade', y='Frequency', data=table2_df.reset_index(), hue='Grade',palette='Reds')
+g.map(sns.barplot, x='Grade', y='Frequency', data=table2_df.reset_index(), hue='Grade',palette='Reds', errorbar = None)
 # Accessing each subplot and annotating bars
 for ax in g.axes.flat:
     for p in ax.patches:
         ax.annotate(f'{int(p.get_height())}', (p.get_x() + p.get_width() / 2., p.get_height()),
-                    ha='center', va='bottom', fontsize=10, color='black', xytext=(0, 13),
+                    ha='center', va='bottom', fontsize=10, color='black', xytext=(0, 2),
                     textcoords='offset points')
 # Set title, x-label, and y-label for each facet
 g.set_titles('Histogram of Earn Credit by Class - {col_name}', fontsize=24)
