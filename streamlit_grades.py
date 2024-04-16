@@ -269,12 +269,12 @@ cluster_centers = kmeans.cluster_centers_
 cluster_centers = np.array(cluster_centers)
 # Calculate the minimum cluster center
 min_cluster_center = round(cluster_centers.min(),2)
-st.write("##### Students of concern have an average grade point of around ",min_cluster_center)
+st.write("##### At-Risk students have an average grade point of around ",min_cluster_center)
 
 
 
 
-st.markdown("## Labeling students of concern" )
+st.markdown("## Labeling At-Risk Students" )
 data4 = data3.copy()
 data4['cluster'] = kmeans.labels_ #create new variable
 data4['cluster'] = data4['cluster'].replace({2: 'Great Standing', 0: 'Good Standing', 1: 'At Risk'}) #relabel numeric with string
@@ -289,7 +289,7 @@ data4['riskPercentile'] = np.round(100-percentile,0)
 data4 = data4.groupby('ID').first().reset_index()
 
 #sidebar add in
-st.sidebar.metric(label="Students of Concern", value=unique_ids_count)
+st.sidebar.metric(label="At-Risk Students", value=unique_ids_count)
 st.sidebar.divider()
 
 
