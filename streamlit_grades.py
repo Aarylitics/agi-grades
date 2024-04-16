@@ -18,7 +18,7 @@ st.sidebar.image("agilogo(1).jpeg", use_column_width=True)
 st.sidebar.title('Agricultural Institute Dashboard')
 st.sidebar.divider()
 
-st.markdown("# Grades Evaluation")
+st.markdown("# Student Assessment")
 st.markdown("### From seeing current grade distributions to obtaining a list on students that need academic help, this dashboard will help you do just that!")
 
 
