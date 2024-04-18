@@ -223,7 +223,7 @@ fig, ax = plt.subplots(figsize=(10, 3))  # Set figure size here
 sns.histplot(data3["avgGradePoint"], ax=ax, color = "red")
 ax.set_title('Histogram of Average Grade Point')
 ax.set_xlabel('Average Grade Point')
-ax.set_ylabel('Frequency')
+ax.set_ylabel('Unique Student Number')
 # Display the plot in Streamlit
 st.pyplot(fig)
 
