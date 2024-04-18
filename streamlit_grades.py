@@ -251,7 +251,7 @@ for centroid in centroids:
     ax.plot([0, len(data3)], [centroid, centroid], c='red', linestyle='--', linewidth=2)
 # Set plot title and labels
 ax.set_title('Clustering of Average Grade Point')
-ax.set_xlabel('Student ID')
+ax.set_xlabel('Frequency')
 ax.set_ylabel('Average Grade Point')
 # Add legend
 legend = ax.legend(*scatter.legend_elements(), title='Cluster', loc='upper right')
