@@ -392,7 +392,7 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
                     df = df[df[column].isin(names)]
     return df
 
-data3 = data3[["ID","Name","classes","Descr","Term","Session","Section","Class Nbr"]]
+data3 = data3[["ID","Name","classes","Descr","Term","Grade","EarnCredit","Session","Section","Class Nbr"]]
 st.markdown("### Use this table to see which classes students have fared in")
 st.write("_Instructions: click 'add student names' → click 'Name' from the drop down → type in students name (Full Name as shown in dataset)_")
 data3 = filter_dataframe(data3)
