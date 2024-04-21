@@ -83,7 +83,7 @@ table2_df.columns = ['Class', 'Grade', 'Frequency']
 table3_df = pd.DataFrame(table3.stack()).reset_index()
 table3_df.columns = ['Class', 'Grade', 'Frequency']
 
-st.write(table1_df)
+
 
 st.markdown("# Student Grades")
 st.write("If the charts don't show up, press refresh!")
